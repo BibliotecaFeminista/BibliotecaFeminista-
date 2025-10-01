@@ -55,21 +55,23 @@ mvn exec:java -Dexec.mainClass="com.biblioteca.app.Main"
 src/
  ├─ main/java/com/biblioteca/
  │   ├─ app/           # Main + CLI
- │   ├─ controller/    # Orquesta peticiones
- │   ├─ view/          # Interfaz en terminal
- │   ├─ service/       # Lógica de negocio
+ │   ├─ controller/    # Handles requests
+ │   ├─ view/          # Terminal interface
+ │   ├─ service/       # Business logic
  │   ├─ dao/           # Interfaces + JDBC impl.
- │   ├─ model/         # Entidades
- │   └─ config/        # Conexión a BD
- └─ test/java/...      # Tests unitarios con JUnit y Mockito
+ │   ├─ model/         # Entities
+ │   └─ config/        # Database connection
+ └─ test/java/...      # Unit tests with JUnit and Mockito
+
 ```
 ## 6) Team
 
 Project developed by a team of 4 members (FemCoders - P7):
 
-- 👩‍💻 **Product Owner (P.O.)** → [Daniella Pacheco - GitHub]([https://github.com/xxxx](https://github.com/DaniPacheco8))  
-- 👩‍💻 **Scrum Master (S.M.)** → [Erika P. Montoya - GitHub]([https://github.com/xxxx](https://github.com/DevErika))  
-- 👩‍💻 **Developer** → [Luisa Moreno - GitHub]([https://github.com/xxxx](https://github.com/LuMorenoM))  
-- 👩‍💻 **Developer** → [Sofia Toro - GitHub]([https://github.com/xxxx](https://github.com/sofiatoroviafara01))  
+- 👩‍💻 **Product Owner (P.O.)** → [Daniella Pacheco - GitHub](https://github.com/DaniPacheco8)  
+- 👩‍💻 **Scrum Master (S.M.)** → [Erika P. Montoya - GitHub](https://github.com/DevErika)  
+- 👩‍💻 **Developer** → [Luisa Moreno - GitHub](https://github.com/LuMorenoM)  
+- 👩‍💻 **Developer** → [Sofia Toro - GitHub](https://github.com/sofiatoroviafara01) 
+
 
 
