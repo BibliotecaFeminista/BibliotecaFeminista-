@@ -23,10 +23,10 @@ This project is developed as a team following agile methodologies and applying t
 |----------------------------|---------------|
 | **Language**               | Java 21 |
 | **Database**               | PostgreSQL |
-| **Dependency Manager**     | Maven |
+| **Dependency Manager**     | Maven 4.0.0 |
 | **IDE / Editor**           | Visual Studio Code |
 | **Version Control**        | Git / GitHub |
-| **Task Management**        | Trello or Jira |
+| **Task Management**        | Trello |
 | **Testing**                | JUnit 5, Mockito |
 
 ---
@@ -49,22 +49,56 @@ mvn clean install
 ```
 mvn exec:java -Dexec.mainClass="com.biblioteca.app.Main"
 ```
+## 4) How it works (User's perspective)
 
-## 5) Project Architecture
-```
-src/
- ├─ main/java/com/biblioteca/
- │   ├─ app/           # Main + CLI
- │   ├─ controller/    # Handles requests
- │   ├─ view/          # Terminal interface
- │   ├─ service/       # Business logic
- │   ├─ dao/           # Interfaces + JDBC impl.
- │   ├─ model/         # Entities
- │   └─ config/        # Database connection
- └─ test/java/...      # Unit tests with JUnit and Mockito
+- Access the main menu from the terminal.
+- List books to view the catalog (without descriptions for faster scanning).
+- Search by title, author, or genre to find specific items.
+- Add a book by entering title, authors, ISBN (unique), genres, and a short description (≤ 200 chars).
+- Edit a book to update any of its fields or relationships (authors/genres).
+- Delete a book when it should no longer appear in the catalog.
+- All operations are validated in the service layer and persisted in PostgreSQL through DAO implementations.
+
+## 5) Flowchart
+Link to the system flowchart (Main menu → use cases)
+
+👉 [Flowchart](https://www.figma.com/board/J97MpUWzVfZ5bkb9NXFibO/Flowchart---Biblioteca-Feminista?node-id=4-1077&t=QFfz4bxlXtz2eAVJ-0) 
+
+## 6) Project Architecture
+The project is monolithic and follows MVC with DAO.
+Packages: controller coordinates requests, service (if added) holds business rules, model contains entities and DAO code, view renders the CLI, config manages DB connections.
 
 ```
-## 6) Team
+BibliotecaFeminista-
+├── .git
+├── .gitignore
+├── README.md
+├── pom.xml
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com
+│   │           └── biblioteca_feminista
+│   │               ├── App.java
+│   │               ├── config
+│   │               │   └── DBManager.java
+│   │               ├── controller
+│   │               │   └── BookController.java
+│   │               ├── model
+│   │               │   ├── Book.java
+│   │               │   ├── BookDaoImpl.java
+│   │               │   └── BookDaoInterface.java
+│   │               └── view
+│   │                   └── BookView.java
+│   └── test
+│       └── java
+│           └── com
+│               └── biblioteca_feminista
+│                   ├── AppMockitoTest.java
+│                   └── AppTest.java
+└── target
+```
+## 7) Team
 
 Project developed by a team of 4 members (FemCoders - P7):
 
