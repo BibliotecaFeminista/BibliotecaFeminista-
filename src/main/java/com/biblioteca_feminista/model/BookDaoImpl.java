@@ -1,5 +1,5 @@
 package com.biblioteca_feminista.model;
 
-public class BookDao {
-    
+public class BookDaoImpl {
+
 }

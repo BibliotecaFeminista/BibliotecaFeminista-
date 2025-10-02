@@ -1,39 +1,36 @@
 package com.biblioteca_feminista.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBManager {
 
-    private static final String URL = ;
-    private static final String USER = ;
-    private static final String PASS = ;
-    private static Connection connection;;
-    
-    public static Connection init (){
-        
-        try{
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private static final String URL = dotenv.get("DB_URL");
+    private static final String USER = dotenv.get("DB_USER");
+    private static final String PASS = dotenv.get("DB_PASS");
+    private static Connection connection;
+
+    public static Connection init() {
+        try {
             connection = DriverManager.getConnection(URL, USER, PASS);
-            System.out.println("conexión exitosa");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Conexión exitosa");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
         return connection;
     }
 
-    public static void close (){
+    public static void close() {
         try {
-            connection.close();
-            System.out.println("Desconexión exitosa");
-        } catch (Exception e){
-            System.out.println(e.getMessage());
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Desconexión exitosa");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-
     }
-
-
-
-
-
-
 }
