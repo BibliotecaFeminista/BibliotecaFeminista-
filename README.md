@@ -49,7 +49,7 @@ mvn clean install
 ```
 mvn exec:java -Dexec.mainClass="com.biblioteca.app.Main"
 ```
-## 4) How it works (User's perspective)
+## 5) How it works (User's perspective)
 
 - Access the main menu from the terminal.
 - List books to view the catalog (without descriptions for faster scanning).
@@ -59,12 +59,12 @@ mvn exec:java -Dexec.mainClass="com.biblioteca.app.Main"
 - Delete a book when it should no longer appear in the catalog.
 - All operations are validated in the service layer and persisted in PostgreSQL through DAO implementations.
 
-## 5) Flowchart
+## 6) Flowchart
 Link to the system flowchart (Main menu → use cases)
 
 👉 [Flowchart](https://www.figma.com/board/J97MpUWzVfZ5bkb9NXFibO/Flowchart---Biblioteca-Feminista?node-id=4-1077&t=QFfz4bxlXtz2eAVJ-0) 
 
-## 6) Project Architecture
+## 7) Project Architecture
 The project is monolithic and follows MVC with DAO.
 Packages: controller coordinates requests, service (if added) holds business rules, model contains entities and DAO code, view renders the CLI, config manages DB connections.
 
@@ -98,7 +98,7 @@ BibliotecaFeminista-
 │                   └── AppTest.java
 └── target
 ```
-## 7) Team
+## 8) Team
 
 Project developed by a team of 4 members (FemCoders - P7):
 
