@@ -1,12 +1,12 @@
 package com.biblioteca_feminista.view;
 
-import java.util.Scanner;
+/**import java.util.Scanner;
 import com.biblioteca_feminista.controller.BookController;
-import com.biblioteca_feminista.model.Book;
+import com.biblioteca_feminista.model.Book;**/
 
 public class BookView {
 
-    private BookController bookController;
+    /** private BookController bookController;
     private Scanner scanner;
 
     public BookView(BookController bookController) {
@@ -156,5 +156,5 @@ public class BookView {
             System.out.println("Responde con 's' o 'n'.");
 
         }
+        } **/
     }
-}

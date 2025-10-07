@@ -1,5 +1,6 @@
 package com.biblioteca_feminista.model;
 
-public class BookDaoInterface {
+public interface BookDaoInterface {
+    public void createBook (Book book);
     
 }
