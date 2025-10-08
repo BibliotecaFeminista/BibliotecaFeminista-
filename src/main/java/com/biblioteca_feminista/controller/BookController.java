@@ -14,20 +14,13 @@ public class BookController {
         this.bookDao = bookDao;
     }
 
+    // ========= LISTAR =========
+    // Aún no hay método en el DAO. Deja mensaje temporal para que compile.
     public void selectAllBooks() {
-        try {
-            List<Book> books = nvl(bookDao.findAll());
-            if (books.isEmpty()) {
-                System.out.println("No hay libros en el catálogo");
-                return;
-            }
-            printBooksNoDescription(books);
-        } catch (Exception e) {
-            System.out.println("Error al listar libros: " + e.getMessage());
-        }
+        System.out.println("Listado de libros: pendiente de implementación en DAO (findAll).");
     }
 
-    // validaciones básicas
+    // ========= CREAR =========
     public void createBook(Book book) {
         List<String> errors = validateForCreate(book);
         if (!errors.isEmpty()) {
@@ -36,30 +29,23 @@ public class BookController {
             return;
         }
         try {
-            Book created = bookDao.create(normalize(book));
-            System.out.println("Libro creado correctamente: ");
-            printOneFull(created);
+            // CONTRATO ACTUAL DEL DAO:
+            // BookDaoInterface.createBook(Book)
+            bookDao.createBook(normalize(book));
+            System.out.println("Libro creado correctamente.");
         } catch (Exception e) {
             System.out.println("Error al crear el libro: " + e.getMessage());
         }
     }
 
+    // ========= BÚSQUEDAS =========
+    // Aún no existen en el DAO. Deja mensajes temporales para que compile.
     public void findBookByTitle(String term) {
         if (isBlank(term)) {
             System.out.println("El título de búsqueda no puede estar vacío.");
             return;
         }
-        try {
-            List<Book> books = nvl(bookDao.findByTitle(term));
-            if (books.isEmpty()) {
-                System.out.println("Sin resultados para el título: " + term);
-                return;
-            }
-            // Si est'a bien mostrar todos los campos: printBooksFull(books);
-            printBooksFull(books);
-        } catch (Exception e) {
-            System.out.println("Error al buscar por título: " + e.getMessage());
-        }
+        System.out.println("Búsqueda por título: pendiente de implementación en DAO (findByTitle).");
     }
 
     public void findBookByAuthor(String term) {
@@ -67,17 +53,7 @@ public class BookController {
             System.out.println("El nombre de la autora no puede estar vacío.");
             return;
         }
-        try {
-            List<Book> books = nvl(bookDao.findByAuthor(term));
-            if (books.isEmpty()) {
-                System.out.println("Sin resultados para la autora: " + term);
-                return;
-            }
-            // Si está bien  mostrar todos los campos,  printBooksFull(books);
-            printBooksFull(books);
-        } catch (Exception e) {
-            System.out.println("Error al buscar por autora: " + e.getMessage());
-        }
+        System.out.println("Búsqueda por autora: pendiente de implementación en DAO (findByAuthor).");
     }
 
     public void findBookByGenre(String term) {
@@ -85,19 +61,10 @@ public class BookController {
             System.out.println("El género no puede estar vacío.");
             return;
         }
-        try {
-            List<Book> books = nvl(bookDao.findByGenre(term));
-            if (books.isEmpty()) {
-                System.out.println("Sin resultados para el género: " + term);
-                return;
-            }
-            printBooksNoDescription(books);
-        } catch (Exception e) {
-            System.out.println("Error al buscar por género: " + e.getMessage());
-        }
+        System.out.println("Búsqueda por género: pendiente de implementación en DAO (findByGenre).");
     }
 
-    // para validar y normalizar
+    // ========= Validación / Normalización =========
     private List<String> validateForCreate(Book b) {
         List<String> errors = new ArrayList<>();
         if (b == null) {
@@ -126,36 +93,14 @@ public class BookController {
         return n;
     }
 
-    // impresión provisional (hasta que la View lo haga)
-    private void printBooksNoDescription(List<Book> books) {
-        System.out.println("\nID | TÍTULO | AUTORA | ISBN | GÉNERO");
-        for (Book b : books) {
-            System.out.printf("%d | %s | %s | %s | %s%n",
-                    b.getId(), safe(b.getTitle()), safe(b.getAuthor()), safe(b.getIsbn()), safe(b.getGenre()));
-        }
-    }
-
-    private void printBooksFull(List<Book> books) {
-        System.out.println("\nID | TÍTULO | AUTORA | DESCRIPCIÓN | ISBN | GÉNERO");
-        for (Book b : books) {
-            System.out.printf("%d | %s | %s | %s | %s | %s%n",
-                    b.getId(), safe(b.getTitle()), safe(b.getAuthor()), safe(b.getDescription()), safe(b.getIsbn()), safe(b.getGenre()));
-        }
-    }
-
-    private void printOneFull(Book b) {
-        System.out.printf("ID=%d, Título=%s, Autora=%s, Descripción=%s, ISBN=%s, Género=%s%n",
-                b.getId(), safe(b.getTitle()), safe(b.getAuthor()), safe(b.getDescription()), safe(b.getIsbn()), safe(b.getGenre()));
-    }
-
     private void printValidationErrors(List<String> errors) {
         System.out.println("Errores de validación:");
         for (String e : errors) System.out.println(" - " + e);
     }
 
-    // utilidades básicas
+    // ========= Utils =========
     private static String trim(String s) { return s == null ? null : s.trim(); }
     private static boolean isBlank(String s) { return s == null || s.trim().isEmpty(); }
-    private static <T> List<T> nvl(List<T> list) { return list == null ? new ArrayList<>() : list; }
-    private static String safe(String s) { return s == null ? "" : s; }
+
+    // (Impresiones de listado/búsqueda quedan pendientes hasta que el DAO exponga métodos)
 }
