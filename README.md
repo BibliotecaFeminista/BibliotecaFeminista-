@@ -7,6 +7,10 @@ The system allows users to **add, edit, delete, list, and search books** by diff
 
 This project is developed as a team following agile methodologies and applying the **MVC architecture** along with the **DAO pattern**.
 
+## 👀 Preview
+![CLI preview of the app](docs/img/Preview_project.png)
+
+
 ---
 
 ## 2) Objectives
