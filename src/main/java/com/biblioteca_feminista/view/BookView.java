@@ -1,12 +1,13 @@
 package com.biblioteca_feminista.view;
 
-/**import java.util.Scanner;
+import java.util.Scanner;
 import com.biblioteca_feminista.controller.BookController;
-import com.biblioteca_feminista.model.Book;**/
+import com.biblioteca_feminista.model.Book;
+
+import static com.biblioteca_feminista.view.WelcomeLibrary.*; // <-- agora funciona
 
 public class BookView {
-
-    /** private BookController bookController;
+    private BookController bookController;
     private Scanner scanner;
 
     public BookView(BookController bookController) {
@@ -17,128 +18,123 @@ public class BookView {
     public void showMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n════════════════ MENÚ ════════════════");
-            System.out.println("\t1. Añadir libro\n\t2. Ediar libro\n\t3. Eliminar libro\n"
-                    + "\t4. Buscar libro\n\t5. Ver listado de libros");
-            System.out.print("Elige una opción: ");
+            System.out.println("\n" + ANSI_YELLOW + "════════════════ MENÚ ════════════════" + ANSI_RESET);
+            System.out.println(ANSI_CYAN +
+                    "\t1. Añadir libro\n\t2. Editar libro\n\t3. Eliminar libro\n" +
+                    "\t4. Buscar libro\n\t5. Ver listado de libros" + ANSI_RESET);
+            System.out.print(ANSI_MAGENTA + "Elige una opción: " + ANSI_RESET);
 
             int answer = scanner.nextInt();
             scanner.nextLine();
 
             switch (answer) {
-                case 1:
-                    System.out.println("\nHas elegido la opción 1: Añadir libro");
+                case 1 -> {
+                    System.out.println(ANSI_GREEN + "\nHas elegido la opción 1: Añadir libro" + ANSI_RESET);
                     createBook();
-                    break;
-                case 2:
-                    System.out.println("\nHas elegido la opción 2: Editar libro");
+                }
+                case 2 -> {
+                    System.out.println(ANSI_GREEN + "\nHas elegido la opción 2: Editar libro" + ANSI_RESET);
                     editBook();
-                    break;
-                case 3:
-                    System.out.println("\nHas elegido la opción 3: Eliminar libro");
+                }
+                case 3 -> {
+                    System.out.println(ANSI_GREEN + "\nHas elegido la opción 3: Eliminar libro" + ANSI_RESET);
                     deleteBook();
-                    break;
-                case 4:
-                    System.out.println("\nHas elegido la opción 4: Buscar libro");
-                    System.out.println("Quieres buscar por: \n\t1.Título \n\t2. Autor \n\t3.Género");
+                }
+                case 4 -> {
+                    System.out.println(ANSI_GREEN + "\nHas elegido la opción 4: Buscar libro" + ANSI_RESET);
+                    System.out.println(
+                            ANSI_CYAN + "¿Quieres buscar por: \n\t1. Título \n\t2. Autor \n\t3. Género" + ANSI_RESET);
                     int searchAnswer = scanner.nextInt();
                     scanner.nextLine();
                     searchChoice(searchAnswer);
-                    break;
-                case 5:
-                    System.out.println("\nHas elegido la opción 5: Ver listado de libros");
+                }
+                case 5 -> {
+                    System.out.println(ANSI_GREEN + "\nHas elegido la opción 5: Ver listado de libros" + ANSI_RESET);
                     selectAllBooks();
-                    break;
-                case 0:
-                    if (confirm("¿Seguro que deseas salir? (s/n): ")) {
+                }
+                case 0 -> {
+                    if (confirm(ANSI_YELLOW + "¿Seguro que deseas salir? (s/n): " + ANSI_RESET)) {
                         running = false;
                     }
-                    break;
-                default:
-                    System.out.println("Error: Opción no válida");
+                }
+                default -> System.out.println(ANSI_RED + "Error: Opción no válida" + ANSI_RESET);
             }
         }
-        System.out.println("¡Hasta luego!");
-
+        System.out.println(ANSI_MAGENTA + "¡Hasta luego!" + ANSI_RESET);
     }
 
     public void selectAllBooks() {
         bookController.selectAllBooks();
-
     }
 
     public void createBook() {
-        System.out.println("Ingrese el título del libro: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el título del libro: " + ANSI_RESET);
         String title = scanner.nextLine();
-        System.out.println("Ingrese el autor del libro: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el autor del libro: " + ANSI_RESET);
         String author = scanner.nextLine();
-        System.out.println("Ingrese la descripción del libro: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa la descripción del libro: " + ANSI_RESET);
         String description = scanner.nextLine();
-        System.out.println("Ingrese ISBL del libro: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el ISBN del libro: " + ANSI_RESET);
         String isbn = scanner.nextLine();
-        System.out.println("Ingrese el género del libro: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el género del libro: " + ANSI_RESET);
         String genre = scanner.nextLine();
 
         Book book = new Book(title, author, description, isbn, genre);
         bookController.createBook(book);
+        System.out.println(ANSI_GREEN + "✔ Libro añadido con éxito." + ANSI_RESET);
     }
 
     public void searchChoice(int searchAnswer) {
-        System.out.println("Escribe la búsqueda: ");
+        System.out.print(ANSI_MAGENTA + "Escribe la búsqueda: " + ANSI_RESET);
         String query = scanner.nextLine();
 
         switch (searchAnswer) {
-            case 1:
-                bookController.findBookByTitle(query);
-                break;
-            case 2:
-                bookController.findBookByAuthor(query);
-                break;
-            case 3:
-                bookController.findBookByGenre(query);
-                break;
-            default:
-                System.out.println("Error: Opción no válida");
-                break;
+            case 1 -> bookController.findBookByTitle(query);
+            case 2 -> bookController.findBookByAuthor(query);
+            case 3 -> bookController.findBookByGenre(query);
+            default -> System.out.println(ANSI_RED + "Error: Opción no válida" + ANSI_RESET);
         }
     }
 
     public void editBook() {
-        System.out.println("Lista actual de libros: ");
+        System.out.println(ANSI_YELLOW + "Lista actual de libros: " + ANSI_RESET);
         bookController.selectAllBooks();
 
-        System.out.println("Ingresa el Id del libro que quieres modificar: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el ID del libro que quieres modificar: " + ANSI_RESET);
         int idAnswer = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.println("Nuevo título: ");
+        System.out.print(ANSI_MAGENTA + "Nuevo título: " + ANSI_RESET);
         String title = scanner.nextLine();
-        System.out.println("Nuevo autor: ");
+        System.out.print(ANSI_MAGENTA + "Nuevo autor: " + ANSI_RESET);
         String author = scanner.nextLine();
-        System.out.println("Nueva descripción: ");
+        System.out.print(ANSI_MAGENTA + "Nueva descripción: " + ANSI_RESET);
         String description = scanner.nextLine();
-        System.out.println("Nuevo ISBN: ");
+        System.out.print(ANSI_MAGENTA + "Nuevo ISBN: " + ANSI_RESET);
         String isbn = scanner.nextLine();
-        System.out.println("Nuevo género: ");
+        System.out.print(ANSI_MAGENTA + "Nuevo género: " + ANSI_RESET);
         String genre = scanner.nextLine();
 
         Book updatedBook = new Book(title, author, description, isbn, genre);
         updatedBook.setId(idAnswer);
         bookController.updatedBook(updatedBook);
+
+        System.out.println(ANSI_GREEN + "✔ Libro actualizado." + ANSI_RESET);
     }
 
     public void deleteBook() {
-        System.out.println("Lista actual de libros: ");
+        System.out.println(ANSI_YELLOW + "Lista actual de libros: " + ANSI_RESET);
         bookController.selectAllBooks();
 
-        System.out.println("Ingressa Id del libro que quieres eliminar: ");
+        System.out.print(ANSI_MAGENTA + "Ingresa el ID del libro que quieres eliminar: " + ANSI_RESET);
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        if (confirm("¿Confirmas la eliminación del libro? (s/n): ")) {
+        if (confirm(ANSI_YELLOW + "¿Confirmas la eliminación del libro? (s/n): " + ANSI_RESET)) {
             bookController.removeBook(id);
+            System.out.println(ANSI_GREEN + "✔ Libro eliminado." + ANSI_RESET);
         } else {
-            System.out.println("Operación cancelada.");
+            System.out.println(ANSI_CYAN + "Operación cancelada." + ANSI_RESET);
         }
     }
 
@@ -153,8 +149,7 @@ public class BookView {
                 return true;
             if (v.equals("n") || v.equals("no"))
                 return false;
-            System.out.println("Responde con 's' o 'n'.");
-
+            System.out.println(ANSI_YELLOW + "Responde con 's' o 'n'." + ANSI_RESET);
         }
-        } **/
     }
+}
