@@ -4,7 +4,7 @@ import java.util.Scanner;
 import com.biblioteca_feminista.controller.BookController;
 import com.biblioteca_feminista.model.Book;
 
-import static com.biblioteca_feminista.view.WelcomeLibrary.*; // <-- agora funciona
+import static com.biblioteca_feminista.view.WelcomeLibrary.*;
 
 public class BookView {
     private BookController bookController;
