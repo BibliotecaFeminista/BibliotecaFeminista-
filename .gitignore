@@ -19,4 +19,18 @@
 *.iml
 /.idea/
 /*.iml
-target/
+Set-Content -Path .gitignore -Encoding utf8 -Value @"
+# Java + Maven
+/target/
+*.class
+*.log
+
+# IDEs
+/.idea/
+/.vscode/
+*.iml
+
+# SO
+.DS_Store
+Thumbs.db
+"@
