@@ -1,7 +1,0 @@
-com/biblioteca_feminista/config/DBManager.class
-com/biblioteca_feminista/controller/BookController.class
-com/biblioteca_feminista/App.class
-com/biblioteca_feminista/view/BookView.class
-com/biblioteca_feminista/model/BookDaoInterface.class
-com/biblioteca_feminista/model/Book.class
-com/biblioteca_feminista/model/BookDao.class
