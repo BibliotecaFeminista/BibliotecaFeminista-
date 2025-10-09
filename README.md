@@ -7,7 +7,7 @@ The system allows users to **add, edit, delete, list, and search books** by diff
 
 This project is developed as a team following agile methodologies and applying the **MVC architecture** along with the **DAO pattern**.
 
-## 👀 Preview
+## Preview
 ![CLI preview of the app](docs/img/Preview_project.png)
 
 
@@ -66,7 +66,7 @@ mvn exec:java -Dexec.mainClass="com.biblioteca.app.Main"
 ## 6) Flowchart
 Link to the system flowchart (Main menu → use cases)
 
-👉 [Flowchart](https://www.figma.com/board/J97MpUWzVfZ5bkb9NXFibO/Flowchart---Biblioteca-Feminista?node-id=4-1077&t=QFfz4bxlXtz2eAVJ-0) 
+[Flowchart](https://www.figma.com/board/J97MpUWzVfZ5bkb9NXFibO/Flowchart---Biblioteca-Feminista?node-id=4-1077&t=QFfz4bxlXtz2eAVJ-0) 
 
 ## 7) Project Architecture
 The project is monolithic and follows MVC with DAO.
