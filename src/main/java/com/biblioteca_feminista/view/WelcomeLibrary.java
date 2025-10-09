@@ -24,10 +24,10 @@ public class WelcomeLibrary {
                                    |/______|/       |/______|/       |/______|/
                                 """ + ANSI_RESET;
 
-                String title = ANSI_BOLD + ANSI_MAGENTA + "✨ ¡Bienvenid@ a Palabras Libres! ✨" + ANSI_RESET;
+                String title = ANSI_BOLD + ANSI_MAGENTA + "¡Bienvenid@ a Palabras Libres!" + ANSI_RESET;
                 String subtitle = ANSI_WHITE + "Donde cada historia encuentra su voz y cada palabra respira libertad."
                                 + ANSI_RESET;
-                String callToAction = ANSI_WHITE + "Abre un libro… y abre el mundo. 📚" + ANSI_RESET;
+                String callToAction = ANSI_WHITE + "Abre un libro y abre el mundo." + ANSI_RESET;
 
                 System.out.println(booksAscii);
                 System.out.println(border);

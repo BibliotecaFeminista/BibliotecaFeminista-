@@ -5,6 +5,7 @@ import com.biblioteca_feminista.model.BookDaoInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class BookController {
 
@@ -14,35 +15,25 @@ public class BookController {
         this.bookDao = bookDao;
     }
 
-    public boolean createBook(Book book) {
-        List<String> errors = validateForCreate(book);
-        if (!errors.isEmpty()) {
-            printValidationErrors(errors);
-            System.out.println("El libro NO se creó.");
-            return false;
-        }
+    public void createBook(Book book) {
+        List<String> errors = validateForCreateOrUpdate(book);
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException(joinErrors(errors));
         try {
             bookDao.createBook(normalize(book));
-            System.out.println("Libro creado correctamente.");
-            return true;
         } catch (Exception e) {
-            System.out.println("Error al crear el libro: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Error al crear el libro: " + e.getMessage(), e);
         }
     }
 
     public void updateBook(Book book) {
-        List<String> errors = validateForCreate(book);
-        if (!errors.isEmpty()) {
-            printValidationErrors(errors);
-            System.out.println("El libro NO se actualizó.");
-            return;
-        }
+        List<String> errors = validateForCreateOrUpdate(book);
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException(joinErrors(errors));
         try {
             bookDao.updateBook(normalize(book));
-            System.out.println("Libro actualizado correctamente.");
         } catch (Exception e) {
-            System.out.println("Error al actualizar el libro: " + e.getMessage());
+            throw new RuntimeException("Error al actualizar el libro: " + e.getMessage(), e);
         }
     }
 
@@ -53,88 +44,74 @@ public class BookController {
     public void removeBook(int id) {
         try {
             bookDao.deleteBook(id);
-            System.out.println("Libro eliminado correctamente.");
         } catch (Exception e) {
-            System.out.println("Error al eliminar el libro: " + e.getMessage());
+            throw new RuntimeException("Error al eliminar el libro: " + e.getMessage(), e);
         }
     }
 
-    public void selectAllBooks() {
+    public List<Book> selectAllBooks() {
         try {
-            List<Book> books = bookDao.findAll();
-            if (books == null || books.isEmpty()) {
-                System.out.println("No hay libros para mostrar.");
-                return;
-            }
-
-            System.out.println("\nListado de libros:");
-            for (Book b : books) {
-                System.out.printf(
-                        "ID: %d | Título: %s | Autora: %s | ISBN: %s | Género: %s%n",
-                        b.getId(), b.getTitle(), b.getAuthor(), b.getIsbn(), b.getGenre());
-            }
+            return bookDao.findAll();
         } catch (Exception e) {
-            System.out.println("Error al listar libros: " + e.getMessage());
+            throw new RuntimeException("Error al listar los libros: " + e.getMessage(), e);
         }
     }
 
-    public void findBookByTitle(String term) {
-        if (isBlank(term)) {
-            System.out.println("El título de búsqueda no puede estar vacío.");
-            return;
-        }
+    public List<Book> findBookByTitle(String term) {
+        if (isBlank(term))
+            throw new IllegalArgumentException("El título de búsqueda no puede estar vacío.");
         try {
-            List<Book> result = bookDao.findByTitle(term);
-            printBooks(result);
+            return bookDao.findByTitle(term);
         } catch (Exception e) {
-            System.out.println("Error en la búsqueda por título: " + e.getMessage());
+            throw new RuntimeException("Error en la búsqueda por título: " + e.getMessage(), e);
         }
     }
 
-    public void findBookByAuthor(String term) {
-        if (isBlank(term)) {
-            System.out.println("El nombre de la autora no puede estar vacío.");
-            return;
-        }
+    public List<Book> findBookByAuthor(String term) {
+        if (isBlank(term))
+            throw new IllegalArgumentException("El nombre del autor no puede estar vacío.");
         try {
-            List<Book> result = bookDao.findByAuthor(term);
-            printBooks(result);
+            return bookDao.findByAuthor(term);
         } catch (Exception e) {
-            System.out.println("Error en la búsqueda por autora: " + e.getMessage());
+            throw new RuntimeException("Error en la búsqueda por autor: " + e.getMessage(), e);
         }
     }
 
-    public void findBookByGenre(String term) {
-        if (isBlank(term)) {
-            System.out.println("El género no puede estar vacío.");
-            return;
-        }
+    public List<Book> findBookByGenre(String term) {
+        if (isBlank(term))
+            throw new IllegalArgumentException("El género no puede estar vacío.");
         try {
-            List<Book> result = bookDao.findByGenre(term);
-            printBooks(result);
+            return bookDao.findByGenre(term);
         } catch (Exception e) {
-            System.out.println("Error en la búsqueda por género: " + e.getMessage());
+            throw new RuntimeException("Error en la búsqueda por género: " + e.getMessage(), e);
         }
     }
 
-    private List<String> validateForCreate(Book b) {
+    private List<String> validateForCreateOrUpdate(Book b) {
         List<String> errors = new ArrayList<>();
         if (b == null) {
-            errors.add("El libro no puede ser null.");
+            errors.add("El libro no puede ser nulo.");
             return errors;
         }
         if (isBlank(b.getTitle()))
             errors.add("El título es obligatorio.");
         if (isBlank(b.getAuthor()))
-            errors.add("La autora es obligatoria.");
+            errors.add("El autor es obligatorio.");
         if (isBlank(b.getIsbn()))
             errors.add("El ISBN es obligatorio.");
         if (isBlank(b.getGenre()))
             errors.add("El género es obligatorio.");
-        if (b.getDescription() != null && trim(b.getDescription()).length() > 200) {
-            errors.add("La descripción debe tener ≤ 200 caracteres.");
-        }
+        if (b.getDescription() != null && trim(b.getDescription()).length() > 200)
+            errors.add("La descripción debe tener como máximo 200 caracteres.");
         return errors;
+    }
+
+    private String joinErrors(List<String> errors) {
+        StringJoiner sj = new StringJoiner("\n");
+        sj.add("Errores de validación:");
+        for (String e : errors)
+            sj.add(" - " + e);
+        return sj.toString();
     }
 
     private Book normalize(Book b) {
@@ -146,25 +123,6 @@ public class BookController {
                 trim(b.getGenre()));
         n.setId(b.getId());
         return n;
-    }
-
-    private void printValidationErrors(List<String> errors) {
-        System.out.println("Errores de validación:");
-        for (String e : errors)
-            System.out.println(" - " + e);
-    }
-
-    private void printBooks(List<Book> books) {
-        if (books == null || books.isEmpty()) {
-            System.out.println("No se encontraron resultados.");
-            return;
-        }
-        System.out.println("\nResultados:");
-        for (Book b : books) {
-            System.out.printf(
-                    "ID: %d | Título: %s | Autora: %s | ISBN: %s | Género: %s%n",
-                    b.getId(), b.getTitle(), b.getAuthor(), b.getIsbn(), b.getGenre());
-        }
     }
 
     private static String trim(String s) {
