@@ -10,15 +10,13 @@ public class WelcomeLibrary {
         public static final String ANSI_GREEN = "\u001B[32m";
         public static final String ANSI_RED = "\u001B[31m";
 
-        // WelcomeLibrary: prints the welcome message when the app starts
-
         public static void printWelcomeMessage() {
                 String border = ANSI_YELLOW
                                 + "══════════════════════════════════════════════════════════════════════════════"
                                 + ANSI_RESET;
 
                 String booksAscii = ANSI_CYAN + """
-                                     __________        __________        __________
+                                     __________      __________        __________
                                     /________/|      /________/|      /________/|
                                    |  ____  | |     |  ____  | |     |  ____  | |
                                    | |LIBRO| | |    | |LIBRO| | |    | |LIBRO| | |

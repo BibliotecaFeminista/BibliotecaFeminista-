@@ -12,7 +12,7 @@ public class BookDaoImpl implements BookDaoInterface {
     public void createBook(Book book) {
         String sql = "INSERT INTO books (title, author, description, isbn, genre) VALUES (?,?,?,?,?)";
         try (Connection conn = DBManager.init();
-             PreparedStatement stm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stm.setString(1, book.getTitle());
             stm.setString(2, book.getAuthor());
@@ -24,7 +24,7 @@ public class BookDaoImpl implements BookDaoInterface {
             if (affected > 0) {
                 try (ResultSet rs = stm.getGeneratedKeys()) {
                     if (rs.next()) {
-                        book.setId(rs.getInt(1)); 
+                        book.setId(rs.getInt(1));
                     }
                 }
             }
@@ -41,7 +41,7 @@ public class BookDaoImpl implements BookDaoInterface {
     public void updateBook(Book book) {
         String sql = "UPDATE books SET title=?, author=?, description=?, isbn=?, genre=? WHERE id=?";
         try (Connection conn = DBManager.init();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
+                PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setString(1, book.getTitle());
             stm.setString(2, book.getAuthor());
@@ -65,7 +65,7 @@ public class BookDaoImpl implements BookDaoInterface {
     public void deleteBook(int id) {
         String sql = "DELETE FROM books WHERE id=?";
         try (Connection conn = DBManager.init();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
+                PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setInt(1, id);
             int affected = stm.executeUpdate();
@@ -84,8 +84,8 @@ public class BookDaoImpl implements BookDaoInterface {
         String sql = "SELECT id, title, author, description, isbn, genre FROM books ORDER BY id";
         List<Book> list = new ArrayList<>();
         try (Connection conn = DBManager.init();
-             PreparedStatement stm = conn.prepareStatement(sql);
-             ResultSet rs = stm.executeQuery()) {
+                PreparedStatement stm = conn.prepareStatement(sql);
+                ResultSet rs = stm.executeQuery()) {
 
             while (rs.next()) {
                 list.add(mapRow(rs));
@@ -101,30 +101,28 @@ public class BookDaoImpl implements BookDaoInterface {
     @Override
     public List<Book> findByTitle(String title) {
         String sql = "SELECT id, title, author, description, isbn, genre " +
-                     "FROM books WHERE LOWER(title) LIKE LOWER(?) ORDER BY title";
+                "FROM books WHERE LOWER(title) LIKE LOWER(?) ORDER BY title";
         return queryList(sql, "%" + title + "%");
     }
 
     @Override
     public List<Book> findByAuthor(String author) {
         String sql = "SELECT id, title, author, description, isbn, genre " +
-                     "FROM books WHERE LOWER(author) LIKE LOWER(?) ORDER BY author";
+                "FROM books WHERE LOWER(author) LIKE LOWER(?) ORDER BY author";
         return queryList(sql, "%" + author + "%");
     }
 
     @Override
     public List<Book> findByGenre(String genre) {
         String sql = "SELECT id, title, author, description, isbn, genre " +
-                     "FROM books WHERE LOWER(genre) LIKE LOWER(?) ORDER BY genre";
+                "FROM books WHERE LOWER(genre) LIKE LOWER(?) ORDER BY genre";
         return queryList(sql, "%" + genre + "%");
     }
-
-    // Helpers
 
     private List<Book> queryList(String sql, String param) {
         List<Book> list = new ArrayList<>();
         try (Connection conn = DBManager.init();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
+                PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setString(1, param);
             try (ResultSet rs = stm.executeQuery()) {
@@ -146,8 +144,7 @@ public class BookDaoImpl implements BookDaoInterface {
                 rs.getString("author"),
                 rs.getString("description"),
                 rs.getString("isbn"),
-                rs.getString("genre")
-        );
+                rs.getString("genre"));
         b.setId(rs.getInt("id"));
         return b;
     }
