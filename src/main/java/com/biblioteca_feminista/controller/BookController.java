@@ -15,7 +15,7 @@ public class BookController {
         this.bookDao = bookDao;
     }
 
-    public void createBook(Book book) {
+    public boolean createBook(Book book) {
         List<String> errors = validateForCreateOrUpdate(book);
         if (!errors.isEmpty())
             throw new IllegalArgumentException(joinErrors(errors));
@@ -24,6 +24,7 @@ public class BookController {
         } catch (Exception e) {
             throw new RuntimeException("Error al crear el libro: " + e.getMessage(), e);
         }
+        return false;
     }
 
     public void updateBook(Book book) {

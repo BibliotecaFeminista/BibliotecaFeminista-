@@ -76,7 +76,7 @@ public class BookView {
         return line;
     }
 
-    private List<Book> safeSelectAll() {
+    public List<Book> safeSelectAll() {
         try {
             return bookController.selectAllBooks();
         } catch (RuntimeException ex) {
@@ -85,7 +85,7 @@ public class BookView {
         }
     }
 
-    private void renderBooks(List<Book> books) {
+    public void renderBooks(List<Book> books) {
         if (books == null || books.isEmpty()) {
             System.out.println(ANSI_YELLOW + "No hay libros para mostrar." + ANSI_RESET);
             return;

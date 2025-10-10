@@ -1,4 +1,4 @@
-package com.biblioteca_feminista.view;
+package com.biblioteca_feminista;
 
 import com.biblioteca_feminista.config.DBManager;
 import org.junit.jupiter.api.BeforeEach;

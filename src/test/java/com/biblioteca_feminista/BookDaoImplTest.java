@@ -28,30 +28,28 @@ class BookControllerTest {
 
     @Test
     void testCreateBook_Success() {
-        when(bookDao.findAll()).thenReturn(List.of(book));
-        boolean result = controller.createBook(book);
-        assertTrue(result);
+        assertDoesNotThrow(() -> controller.createBook(book));
         verify(bookDao).createBook(any(Book.class));
     }
 
     @Test
     void testCreateBook_InvalidData() {
         Book invalid = new Book("", "", "", "", "");
-        boolean result = controller.createBook(invalid);
-        assertFalse(result);
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> controller.createBook(invalid));
+        assertTrue(ex.getMessage().contains("Errores de validación"));
         verify(bookDao, never()).createBook(any());
     }
 
     @Test
     void testUpdateBook_Success() {
-        controller.updateBook(book);
+        assertDoesNotThrow(() -> controller.updateBook(book));
         verify(bookDao).updateBook(any(Book.class));
     }
 
     @Test
     void testUpdateBook_InvalidData() {
         Book invalid = new Book("", "", "", "", "");
-        controller.updateBook(invalid);
+        assertThrows(IllegalArgumentException.class, () -> controller.updateBook(invalid));
         verify(bookDao, never()).updateBook(any());
     }
 
@@ -75,7 +73,7 @@ class BookControllerTest {
 
     @Test
     void testFindBookByTitle_DoesNotCallDaoWhenBlank() {
-        controller.findBookByTitle("  ");
+        assertThrows(IllegalArgumentException.class, () -> controller.findBookByTitle("  "));
         verify(bookDao, never()).findByTitle(anyString());
     }
 
