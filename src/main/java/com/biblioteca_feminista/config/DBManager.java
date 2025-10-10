@@ -29,6 +29,7 @@ public class DBManager {
                 connection.close();
                 System.out.println("Desconexión exitosa");
             }
+            
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
