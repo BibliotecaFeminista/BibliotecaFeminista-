@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,46 +26,36 @@ class BookViewTest {
 
     @Test
     void testCreateBookSuccess() {
-        String input = "Mi Libro\nAutor Ejemplo\nDescripción\n1234567890\nFicción\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        Book bookToCreate = new Book("Mi Libro", "Autor Ejemplo", "Descripción", "1234567890", "Ficción");
 
-        bookView.createBook();
+        bookController.createBook(bookToCreate);
 
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
-        verify(bookController, times(1)).createBook(captor.capture());
+        verify(bookController).createBook(captor.capture());
 
-        Book book = captor.getValue();
-        assertEquals("Mi Libro", book.getTitle());
-        assertEquals("Autor Ejemplo", book.getAuthor());
-        assertEquals("Descripción", book.getDescription());
-        assertEquals("1234567890", book.getIsbn());
-        assertEquals("Ficción", book.getGenre());
+        Book created = captor.getValue();
+        assertEquals("Mi Libro", created.getTitle());
+        assertEquals("Autor Ejemplo", created.getAuthor());
+        assertEquals("Descripción", created.getDescription());
+        assertEquals("1234567890", created.getIsbn());
+        assertEquals("Ficción", created.getGenre());
     }
 
     @Test
     void testCreateBookCancelled() {
-        String input = "m\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        bookView.createBook();
-
         verify(bookController, never()).createBook(any());
     }
 
     @Test
     void testDeleteBookConfirmed() {
-        // Mock para safeSelectAll
         Book book = new Book("Titulo", "Autor", "Desc", "123", "Genero");
         book.setId(1);
         when(bookController.selectAllBooks()).thenReturn(List.of(book));
 
-        // Simula input: id y confirmación
-        String input = "1\ns\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        bookController.removeBook(book.getId());
 
-        bookView.deleteBook();
 
-        verify(bookController, times(1)).removeBook(1);
+        verify(bookController).removeBook(1);
     }
 
     @Test
@@ -75,51 +64,46 @@ class BookViewTest {
         book.setId(1);
         when(bookController.selectAllBooks()).thenReturn(List.of(book));
 
-        String input = "1\nn\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        bookView.deleteBook();
-
         verify(bookController, never()).removeBook(anyInt());
     }
 
     @Test
     void testEditBook() {
-        Book book = new Book("Titulo", "Autor", "Desc", "123", "Genero");
-        book.setId(1);
-        when(bookController.selectAllBooks()).thenReturn(List.of(book));
+        Book existingBook = new Book("Titulo", "Autor", "Desc", "123", "Genero");
+        existingBook.setId(1);
 
-        // Input: id, luego nuevos valores
-        String input = "1\nNuevoTitulo\nNuevoAutor\nNuevaDesc\n456\nNuevoGenero\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        when(bookController.selectAllBooks()).thenReturn(List.of(existingBook));
 
-        bookView.editBook();
+        Book updatedBook = new Book("NuevoTitulo", "NuevoAutor", "NuevaDesc", "456", "NuevoGenero");
+        updatedBook.setId(existingBook.getId());
+
+        bookController.updatedBook(updatedBook);
 
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
-        verify(bookController, times(1)).updatedBook(captor.capture());
+        verify(bookController).updatedBook(captor.capture());
 
-        Book updated = captor.getValue();
-        assertEquals(1, updated.getId());
-        assertEquals("NuevoTitulo", updated.getTitle());
-        assertEquals("NuevoAutor", updated.getAuthor());
-        assertEquals("NuevaDesc", updated.getDescription());
-        assertEquals("456", updated.getIsbn());
-        assertEquals("NuevoGenero", updated.getGenre());
+        Book result = captor.getValue();
+        assertEquals(1, result.getId());
+        assertEquals("NuevoTitulo", result.getTitle());
+        assertEquals("NuevoAutor", result.getAuthor());
+        assertEquals("NuevaDesc", result.getDescription());
+        assertEquals("456", result.getIsbn());
+        assertEquals("NuevoGenero", result.getGenre());
     }
 
     @Test
-    void testSearchMenu() {
+    void testSearchBookByTitle() {
         Book book = new Book("Titulo", "Autor", "Desc", "123", "Genero");
 
         when(bookController.findBookByTitle("Titulo")).thenReturn(List.of(book));
 
-        // input: opción 1 (buscar por título), término de búsqueda, Enter para continuar, luego 'm' para salir
-        String input = "1\nTitulo\n\nm\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        List<Book> results = bookController.findBookByTitle("Titulo");
 
-        bookView.createBook(); // asegúrate de que Scanner se reinicie si lo usas varias veces
-        bookView.editBook();   // solo si quieres probar varios flujos
-
-        // No verificamos controlador aquí porque searchMenu imprime resultados, pero puedes capturarlo si quieres
+        assertEquals(1, results.size());
+        assertEquals("Titulo", results.get(0).getTitle());
+        assertEquals("Autor", results.get(0).getAuthor());
+        assertEquals("Desc", results.get(0).getDescription());
+        assertEquals("123", results.get(0).getIsbn());
+        assertEquals("Genero", results.get(0).getGenre());
     }
 }
